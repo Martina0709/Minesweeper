@@ -1,4 +1,4 @@
-package Minesweeper;
+package minesweeper;
 
 import minesweeper.consoleui.ConsoleUI;
 import minesweeper.core.Field;
