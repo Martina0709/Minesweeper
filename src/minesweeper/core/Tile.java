@@ -1,4 +1,4 @@
-package Minesweeper.core;
+package minesweeper.core;
 
 /**
  * Tile of a field.

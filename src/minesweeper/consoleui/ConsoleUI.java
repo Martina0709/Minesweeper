@@ -1,4 +1,4 @@
-package Minesweeper.consoleui;
+package minesweeper.consoleui;
 
 import java.io.BufferedReader;
 import java.io.IOException;

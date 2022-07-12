@@ -1,4 +1,4 @@
-package Minesweeper.core;
+package minesweeper.core;
 
 /**
  * Field represents playing field and game logic.
@@ -82,7 +82,7 @@ public class Field {
      * Generates playing field.
      */
     private void generate() {
-        throw new UnsupportedOperationException("Method generate not yet implemented");
+//        throw new UnsupportedOperationException("Method generate not yet implemented");
     }
 
     /**
