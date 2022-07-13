@@ -47,13 +47,7 @@ public class Field {
         //generate the field content
         generate();
 
-        for(int row = 0; row < rowCount; row++){
-            for(int column = 0; column < columnCount; column++){
-                System.out.print(tiles[row][column]);
-                System.out.print("\t");
-            }
-            System.out.println();
-        }
+
     }
 
     /**

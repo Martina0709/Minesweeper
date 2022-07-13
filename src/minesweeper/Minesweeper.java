@@ -8,7 +8,7 @@ import minesweeper.core.Field;
  */
 public class Minesweeper {
     /** User interface. */
-    private ConsoleUI userInterface;
+    private UserInterface userInterface;
  
     /**
      * Constructor.
