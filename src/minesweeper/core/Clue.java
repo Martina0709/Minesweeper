@@ -21,8 +21,6 @@ public class Clue  extends Tile {
 
     @Override
     public String toString() {
-        return "Clue{" +
-                "value=" + value +
-                '}';
+        return String.valueOf(value);
     }
 }
