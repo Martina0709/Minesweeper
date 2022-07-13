@@ -46,6 +46,14 @@ public class Field {
 
         //generate the field content
         generate();
+
+        for(int row = 0; row < rowCount; row++){
+            for(int column = 0; column < columnCount; column++){
+                System.out.print(tiles[row][column]);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -100,13 +108,19 @@ public class Field {
             }
         }
 
-        for(int row = 0; row < rowCount; row++){
-            for(int column = 0; column < columnCount; column++){
-                System.out.print(tiles[row][column]);
-                System.out.print(" ");
+        for (int i = 0; i < rowCount; i++){
+            for (int j = 0; j < columnCount; j++){
+                if (tiles[i][j] == null){
+                    tiles[i][j] = new Clue(countAdjacentMines(i, j));
+                }
             }
-            System.out.println();
         }
+
+
+
+
+
+
     }
 
     /**
