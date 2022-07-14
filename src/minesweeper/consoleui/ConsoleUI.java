@@ -3,9 +3,12 @@ package minesweeper.consoleui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import minesweeper.UserInterface;
 import minesweeper.core.Field;
+import minesweeper.core.GameState;
 import minesweeper.core.Tile;
 
 /**
@@ -46,7 +49,13 @@ public class ConsoleUI implements UserInterface {
         do {
             update();
             processInput();
-            throw new UnsupportedOperationException("Resolve the game state - winning or loosing condition.");
+            if (field.getState() == GameState.SOLVED) {
+                System.out.println("Vyhrali ste!");
+                System.exit(0);
+            } else if(field.getState() == GameState.FAILED){
+                System.out.println("Prehrali ste.");
+                System.exit(0);
+            }
         } while (true);
     }
 
@@ -86,6 +95,36 @@ public class ConsoleUI implements UserInterface {
      * Reads line from console and does the action on a playing field according to input string.
      */
     private void processInput() {
-        throw new UnsupportedOperationException("Method processInput not yet implemented");
+        System.out.print("Zadajte X pre ukoncenie hry\nM[A-I][0-8] pre oznacenie dlazdice\nO[A-I][0-8] pre odkrytie dlazdice\n");
+
+        String input = readLine();
+
+        if (input.equals("X")) {
+            System.exit(0);
+            return;
+        }
+
+        Pattern pattern = Pattern.compile("M[A-I][0-8]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(input);
+        boolean matchFound = matcher.find();
+        if (matchFound) {
+            int row = input.charAt(1) - 65;
+            int column = input.charAt(2) - 48;
+            field.markTile(row, column);
+            return;
+        }
+
+        pattern = Pattern.compile("O[A-I][0-8]", Pattern.CASE_INSENSITIVE);
+        matcher = pattern.matcher(input);
+        matchFound = matcher.find();
+        if (matchFound) {
+            int row = input.charAt(1) - 65;
+            int column = input.charAt(2) - 48;
+            field.openTile(row, column);
+            return;
+        }
+
+        processInput();
+
     }
 }
