@@ -123,7 +123,25 @@ public class Field {
      * @return true if game is solved, false otherwise
      */
     private boolean isSolved() {
-        throw new UnsupportedOperationException("Method isSolved not yet implemented");
+        int row = rowCount;
+        int column = columnCount;
+        int tiles = row * column;
+        return (tiles - numberOfOpen() == mineCount);
+
+//        throw new UnsupportedOperationException("Method isSolved not yet implemented");
+    }
+
+    private int numberOfOpen(){
+        int numberOfOpen = 0;
+        for(int i = 0; i < rowCount; i++){
+            for (int j = 0; j < columnCount; j++){
+                Tile tile = tiles[i][j];
+                if (tile.getState() == Tile.State.OPEN){
+                    numberOfOpen++;
+                }
+            }
+        }
+        return numberOfOpen;
     }
 
     /**

@@ -60,14 +60,25 @@ public class ConsoleUI implements UserInterface {
         }
         System.out.println();
         for (int row = 0; row < field.getRowCount(); row++) {
-            System.out.printf("%c%s", row+65, "\t");
+            System.out.printf("%c%s", row + 65, "\t");
             for (int column = 0; column < field.getColumnCount(); column++) {
-                System.out.printf("%s%s", field.getTile(row, column), "\t");
+                Tile tile = field.getTile(row, column);
+                if (tile.getState() == Tile.State.MARKED) {
+//                    System.out.printf("%c%s", 'M', "\t");
+                    System.out.print('M');
+                } else if (tile.getState() == Tile.State.CLOSED) {
+//                    System.out.printf("%c%s", '-', "\t");
+                    System.out.print('-');
+                } else {
+                    System.out.print(field.getTile(row, column));
+
+                }
+                System.out.print("\t");
+
             }
             System.out.println();
-        }
-
 //        throw new UnsupportedOperationException("Method update not yet implemented");
+        }
     }
 
     /**
