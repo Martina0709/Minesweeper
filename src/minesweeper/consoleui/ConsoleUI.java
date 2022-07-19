@@ -52,7 +52,7 @@ public class ConsoleUI implements UserInterface {
             if (field.getState() == GameState.SOLVED) {
                 System.out.println("Vyhrali ste!");
                 System.exit(0);
-            } else if(field.getState() == GameState.FAILED){
+            } else if (field.getState() == GameState.FAILED) {
                 System.out.println("Prehrali ste.");
                 System.exit(0);
             }
@@ -64,6 +64,7 @@ public class ConsoleUI implements UserInterface {
      */
     @Override
     public void update() {
+        System.out.printf("Pocet neoznacenych min: %d%n", field.getRemainingMineCount());
         for (int i = 0; i < field.getColumnCount(); i++) {
             System.out.printf("%s%d", "\t", i);
         }
@@ -90,15 +91,7 @@ public class ConsoleUI implements UserInterface {
         }
     }
 
-    /**
-     * Processes user input.
-     * Reads line from console and does the action on a playing field according to input string.
-     */
-    private void processInput() {
-        System.out.print("Zadajte X pre ukoncenie hry\nM[A-I][0-8] pre oznacenie dlazdice\nO[A-I][0-8] pre odkrytie dlazdice\n");
-
-        String input = readLine();
-
+    private void handleInput(String input) throws WrongFormatException {
         if (input.equals("X")) {
             System.exit(0);
             return;
@@ -124,7 +117,24 @@ public class ConsoleUI implements UserInterface {
             return;
         }
 
-        processInput();
+        throw new WrongFormatException("Zadali ste nespravny vstup.");
+    }
 
+    /**
+     * Processes user input.
+     * Reads line from console and does the action on a playing field according to input string.
+     */
+    private void processInput() {
+        System.out.print("Zadajte X pre ukoncenie hry\nM[A-I][0-8] pre oznacenie dlazdice\nO[A-I][0-8] pre odkrytie dlazdice\n");
+
+        String input = readLine();
+
+        try {
+            handleInput(input);
+        } catch (WrongFormatException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+//        processInput();
     }
 }

@@ -109,12 +109,6 @@ public class Field {
                 }
             }
         }
-
-
-
-
-
-
     }
 
     /**
@@ -168,6 +162,19 @@ public class Field {
         }
 
         return count;
+    }
+
+    public int getRemainingMineCount(){
+        int mineCount = 0;
+        for(int row = 0; row < tiles.length; row++){
+            for(int column = 0; column < tiles[row].length; column++){
+                Tile tile = tiles[row][column];
+                if(tile instanceof Mine && tile.getState() == Tile.State.CLOSED){
+                    mineCount++;
+                }
+            }
+        }
+        return mineCount;
     }
 
     public int getRowCount() {
