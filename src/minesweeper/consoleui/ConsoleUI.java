@@ -52,6 +52,9 @@ public class ConsoleUI implements UserInterface {
             processInput();
             if (field.getState() == GameState.SOLVED) {
                 System.out.println("Vyhrali ste!");
+                System.out.println("Zadajte vase meno: ");
+                String name = readLine();
+                Minesweeper.getInstance().getBestTimes().addPlayerTime(name, Minesweeper.getInstance().getPlayingSeconds());
                 System.out.println(Minesweeper.getInstance().getBestTimes());
                 System.exit(0);
             } else if (field.getState() == GameState.FAILED) {
@@ -101,7 +104,7 @@ public class ConsoleUI implements UserInterface {
             return;
         }
 
-        Pattern pattern = Pattern.compile("M[A-I][0-8]", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("M[A-I][0-8]");
         Matcher matcher = pattern.matcher(input);
         boolean matchFound = matcher.find();
         if (matchFound) {
@@ -111,7 +114,7 @@ public class ConsoleUI implements UserInterface {
             return;
         }
 
-        pattern = Pattern.compile("O[A-I][0-8]", Pattern.CASE_INSENSITIVE);
+        pattern = Pattern.compile("O[A-I][0-8]");
         matcher = pattern.matcher(input);
         matchFound = matcher.find();
         if (matchFound) {
@@ -134,7 +137,7 @@ public class ConsoleUI implements UserInterface {
         String input = readLine();
 
         try {
-            handleInput(input);
+            handleInput(input.toUpperCase());
         } catch (WrongFormatException ex) {
             System.out.println(ex.getMessage());
         }

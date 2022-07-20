@@ -61,7 +61,7 @@ public class Field {
         if (tile.getState() == Tile.State.CLOSED) {
             tile.setState(Tile.State.OPEN);
 
-            if(tile instanceof Clue && ((Clue)tile).getValue() == 0) {
+            if (tile instanceof Clue && ((Clue) tile).getValue() == 0) {
                 getOpenAdjacentTiles(row, column);
             }
 

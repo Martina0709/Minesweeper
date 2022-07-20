@@ -1,7 +1,6 @@
 package minesweeper;
 
 import minesweeper.consoleui.ConsoleUI;
-import minesweeper.core.BestTimes;
 import minesweeper.core.Field;
 
 /**
@@ -29,7 +28,7 @@ public class Minesweeper {
     }
 
     public static Minesweeper getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             new Minesweeper();
         }
         return instance;
@@ -37,7 +36,7 @@ public class Minesweeper {
 
     public int getPlayingSeconds() {
         long currentTime = System.currentTimeMillis();
-        return (int) (currentTime-startMillis) / 1000;
+        return (int) (currentTime - startMillis) / 1000;
     }
 
     public BestTimes getBestTimes() {
