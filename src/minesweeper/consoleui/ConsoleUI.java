@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import minesweeper.Minesweeper;
 import minesweeper.UserInterface;
 import minesweeper.core.Field;
 import minesweeper.core.GameState;
@@ -51,6 +52,7 @@ public class ConsoleUI implements UserInterface {
             processInput();
             if (field.getState() == GameState.SOLVED) {
                 System.out.println("Vyhrali ste!");
+                System.out.println(Minesweeper.getInstance().getBestTimes());
                 System.exit(0);
             } else if (field.getState() == GameState.FAILED) {
                 System.out.println("Prehrali ste.");
@@ -64,6 +66,9 @@ public class ConsoleUI implements UserInterface {
      */
     @Override
     public void update() {
+        System.out.printf("Cas hrania: %d%n",
+                Minesweeper.getInstance().getPlayingSeconds()
+        );
         System.out.printf("Pocet neoznacenych min: %d%n", field.getRemainingMineCount());
         for (int i = 0; i < field.getColumnCount(); i++) {
             System.out.printf("%s%d", "\t", i);
@@ -87,7 +92,6 @@ public class ConsoleUI implements UserInterface {
 
             }
             System.out.println();
-//        throw new UnsupportedOperationException("Method update not yet implemented");
         }
     }
 
@@ -134,7 +138,5 @@ public class ConsoleUI implements UserInterface {
         } catch (WrongFormatException ex) {
             System.out.println(ex.getMessage());
         }
-
-//        processInput();
     }
 }

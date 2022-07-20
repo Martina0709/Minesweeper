@@ -60,6 +60,11 @@ public class Field {
         Tile tile = tiles[row][column];
         if (tile.getState() == Tile.State.CLOSED) {
             tile.setState(Tile.State.OPEN);
+
+            if(tile instanceof Clue && ((Clue)tile).getValue() == 0) {
+                getOpenAdjacentTiles(row, column);
+            }
+
             if (tile instanceof Mine) {
                 state = GameState.FAILED;
                 return;
@@ -68,6 +73,20 @@ public class Field {
             if (isSolved()) {
                 state = GameState.SOLVED;
                 return;
+            }
+        }
+    }
+
+    private void getOpenAdjacentTiles(int row, int column) {
+        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+            int actRow = row + rowOffset;
+            if (actRow >= 0 && actRow < rowCount) {
+                for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
+                    int actColumn = column + columnOffset;
+                    if (actColumn >= 0 && actColumn < columnCount) {
+                        openTile(actRow, actColumn);
+                    }
+                }
             }
         }
     }
@@ -165,16 +184,16 @@ public class Field {
     }
 
     public int getRemainingMineCount() {
-        int mineCount = 0;
+        int markedMines = 0;
         for (int row = 0; row < tiles.length; row++) {
             for (int column = 0; column < tiles[row].length; column++) {
                 Tile tile = tiles[row][column];
-                if (tile instanceof Mine && tile.getState() == Tile.State.CLOSED) {
-                    mineCount++;
+                if (tile instanceof Mine && tile.getState() == Tile.State.MARKED) {
+                    markedMines++;
                 }
             }
         }
-        return mineCount;
+        return getMineCount() - markedMines;
     }
 
     public int getRowCount() {
