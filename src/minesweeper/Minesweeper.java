@@ -7,6 +7,18 @@ import minesweeper.core.Field;
  * Main application class.
  */
 public class Minesweeper {
+
+    private Settings setting;
+
+    public Settings getSetting() {
+        return null;
+    }
+
+    public void setSetting(Settings setting) {
+
+    }
+
+
     /**
      * User interface.
      */
