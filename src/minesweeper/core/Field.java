@@ -119,6 +119,7 @@ public class Field {
                 tiles[randomRow][randomColumn] = new Mine();
                 minesPlaced++;
             }
+
         }
 
         for (int i = 0; i < rowCount; i++) {

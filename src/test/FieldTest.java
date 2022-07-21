@@ -47,10 +47,10 @@ public class FieldTest {
 //
 //    }
 
-//    @Test
-//    public void checkOpenClue() {
-//
-//    }
+    @Test
+    public void checkOpenClue() {
+
+    }
 
     @Test
     public void checkOpenMine() {
