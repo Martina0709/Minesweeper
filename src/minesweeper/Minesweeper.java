@@ -7,18 +7,6 @@ import minesweeper.core.Field;
  * Main application class.
  */
 public class Minesweeper {
-
-    private Settings setting;
-
-    public Settings getSetting() {
-        return null;
-    }
-
-    public void setSetting(Settings setting) {
-
-    }
-
-
     /**
      * User interface.
      */
@@ -26,16 +14,19 @@ public class Minesweeper {
     private long startMillis;
     private BestTimes bestTimes = new BestTimes();
     private static Minesweeper instance;
+    private Settings setting;
 
     /**
      * Constructor.
      */
     private Minesweeper() {
+        Settings.EXPERT.save();
+
         instance = this;
         userInterface = new ConsoleUI();
         startMillis = System.currentTimeMillis();
-
-        Field field = new Field(9, 9, 10);
+        setting = Settings.load();
+        Field field = new Field(setting.getRowCount(), setting.getColumnCount(), setting.getMineCount());
         userInterface.newGameStarted(field);
     }
 
@@ -53,6 +44,15 @@ public class Minesweeper {
 
     public BestTimes getBestTimes() {
         return bestTimes;
+    }
+
+    public Settings getSetting() {
+        return setting;
+    }
+
+    public void setSetting(Settings setting) {
+        this.setting = setting;
+        this.setting.save();
     }
 
     /**

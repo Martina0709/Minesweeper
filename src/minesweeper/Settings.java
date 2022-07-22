@@ -1,6 +1,6 @@
 package minesweeper;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class Settings implements Serializable {
 
@@ -16,13 +16,25 @@ public class Settings implements Serializable {
             + System.getProperty("file.separator")
             + "minesweeper.settings";
 
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (!(obj instanceof Settings)) {
-//            return false;
-//        }
-//
-//    }
+    public Settings(int rowCount, int columnCount, int mineCount) {
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
+        this.mineCount = mineCount;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Settings)) {
+            return false;
+        }
+
+        Settings s = (Settings) obj;
+        if (s.rowCount == rowCount && s.columnCount == columnCount && s.mineCount == mineCount) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public int hashCode() {
@@ -30,13 +42,42 @@ public class Settings implements Serializable {
     }
 
     public void save() {
-
+        ObjectOutputStream outputStream = null;
+        try {
+            outputStream = new ObjectOutputStream(new FileOutputStream(SETTING_FILE));
+            outputStream.writeObject(this);
+        } catch (IOException e) {
+            System.out.println("Settings sa nepodarilo zapisat");
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                }
+            }
+        }
     }
 
-    public Settings(int rowCount, int columnCount, int mineCount) {
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
-        this.mineCount = mineCount;
+    public static Settings load() {
+        ObjectInputStream inputStream = null;
+
+        try {
+            inputStream = new ObjectInputStream(new FileInputStream(SETTING_FILE));
+            Settings s = (Settings) inputStream.readObject();
+            return s;
+        } catch (IOException e) {
+            System.out.println("Settings subor sa nepodarilo otvorit, nastavujem obtiaznost na BEGINNER");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Settings subor sa nenasiel, nastavujem obtiaznost na BEGINNER");
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return BEGINNER;
     }
 
     public int getRowCount() {

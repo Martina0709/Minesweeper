@@ -104,22 +104,24 @@ public class ConsoleUI implements UserInterface {
             return;
         }
 
-        Pattern pattern = Pattern.compile("M[A-I][0-8]");
+        Pattern pattern = Pattern.compile("([M]{1})([A-Z]{1})([0-9]{1,2})");
         Matcher matcher = pattern.matcher(input);
         boolean matchFound = matcher.find();
         if (matchFound) {
-            int row = input.charAt(1) - 65;
-            int column = input.charAt(2) - 48;
+            char letter = matcher.group(2).charAt(0);
+            int row = letter - 65;
+            int column = Integer.parseInt(matcher.group(3));
             field.markTile(row, column);
             return;
         }
 
-        pattern = Pattern.compile("O[A-I][0-8]");
+        pattern = Pattern.compile("([O]{1})([A-Z]{1})([0-9]{1,2})");
         matcher = pattern.matcher(input);
         matchFound = matcher.find();
         if (matchFound) {
-            int row = input.charAt(1) - 65;
-            int column = input.charAt(2) - 48;
+            char letter = matcher.group(2).charAt(0);
+            int row = letter - 65;
+            int column = Integer.parseInt(matcher.group(3));
             field.openTile(row, column);
             return;
         }
