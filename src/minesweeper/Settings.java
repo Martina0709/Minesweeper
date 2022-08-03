@@ -3,18 +3,15 @@ package minesweeper;
 import java.io.*;
 
 public class Settings implements Serializable {
+    private int rowCount;
+    private int columnCount;
+    private int mineCount;
 
-    private final int rowCount;
-    private final int columnCount;
-    private final int mineCount;
+    public static Settings BEGINNER = new Settings(9, 9, 10);
+    public static Settings INTERMEDIATE = new Settings(16, 16, 40);
+    public static Settings EXPERT = new Settings(16, 30, 99);
 
-    public static final Settings BEGINNER = new Settings(9, 9, 10);
-    public static final Settings INTERMEDIATE = new Settings(16, 16, 40);
-    public static final Settings EXPERT = new Settings(16, 30, 99);
-
-    private static final String SETTING_FILE = System.getProperty("user.home")
-            + System.getProperty("file.separator")
-            + "minesweeper.settings";
+    private static final String SETTING_FILE = System.getProperty("user.home") + System.getProperty("file.separator") + "minesweeper.settings";
 
     public Settings(int rowCount, int columnCount, int mineCount) {
         this.rowCount = rowCount;
@@ -22,18 +19,40 @@ public class Settings implements Serializable {
         this.mineCount = mineCount;
     }
 
+    public int getRowCount() {
+        return rowCount;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    public int getColumnCount() {
+        return columnCount;
+    }
+
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
+    }
+
+    public int getMineCount() {
+        return mineCount;
+    }
+
+    public void setMineCount(int mineCount) {
+        this.mineCount = mineCount;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Settings)) {
+        //inicializacia s priamo v podmienke
+        //pattern variables
+        if (!(obj instanceof Settings s)) {
             return false;
         }
-
-        Settings s = (Settings) obj;
-        if (s.rowCount == rowCount && s.columnCount == columnCount && s.mineCount == mineCount) {
-            return true;
-        } else {
-            return false;
-        }
+        return s.rowCount == rowCount
+                && s.columnCount == columnCount
+                && s.mineCount == mineCount;
     }
 
     @Override
@@ -42,54 +61,39 @@ public class Settings implements Serializable {
     }
 
     public void save() {
-        ObjectOutputStream outputStream = null;
+        ObjectOutputStream oos = null;
         try {
-            outputStream = new ObjectOutputStream(new FileOutputStream(SETTING_FILE));
-            outputStream.writeObject(this);
+            oos = new ObjectOutputStream(
+                    new FileOutputStream(SETTING_FILE));
+            oos.writeObject(this);
         } catch (IOException e) {
-            System.out.println("Settings sa nepodarilo zapisat");
+            System.out.println("info: nepodarilo sa zapisat settings do objektu");
         } finally {
-            if (outputStream != null) {
+            if (oos != null) {
                 try {
-                    outputStream.close();
+                    oos.close();
                 } catch (IOException e) {
+                    //empty naschval
                 }
             }
         }
     }
 
     public static Settings load() {
-        ObjectInputStream inputStream = null;
-
-        try {
-            inputStream = new ObjectInputStream(new FileInputStream(SETTING_FILE));
-            Settings s = (Settings) inputStream.readObject();
-            return s;
+        //try with resources - netreba robit close()
+        try(ObjectInputStream ois = new ObjectInputStream(
+                    new FileInputStream(SETTING_FILE))) {
+            return (Settings) ois.readObject();
         } catch (IOException e) {
-            System.out.println("Settings subor sa nepodarilo otvorit, nastavujem obtiaznost na BEGINNER");
+            System.out.println("Info: nepodarilo sa otvorit settings subor, pouzivam default BEGINNER");
         } catch (ClassNotFoundException e) {
-            System.out.println("Settings subor sa nenasiel, nastavujem obtiaznost na BEGINNER");
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                }
-            }
+            System.out.println("Info: nepodarilo sa precitat settings, pouzivam default BEGINNER");
         }
         return BEGINNER;
     }
 
-    public int getRowCount() {
-        return rowCount;
-    }
-
-    public int getColumnCount() {
-        return columnCount;
-    }
-
-    public int getMineCount() {
-        return mineCount;
+    @Override
+    public String toString() {
+        return "Settings [" + rowCount + "," + columnCount + "," + mineCount + "]";
     }
 }
-
