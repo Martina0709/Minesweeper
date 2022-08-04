@@ -32,7 +32,7 @@ public class CommentServiceTest {
         assertEquals(1, comments.size());
         assertEquals("minesweeper", comments.get(0).getGame());
         assertEquals("Jeno", comments.get(0).getUserName());
-        assertEquals(123, comments.get(0).getComment());
+        assertEquals("bla", comments.get(0).getComment());
         assertEquals(date, comments.get(0).getCommented_on());
     }
 
@@ -51,17 +51,17 @@ public class CommentServiceTest {
 
         assertEquals("minesweeper", comments.get(0).getGame());
         assertEquals("Katka", comments.get(0).getUserName());
-        assertEquals(150, comments.get(0).getComment());
+        assertEquals("bla", comments.get(0).getComment());
         assertEquals(date, comments.get(0).getCommented_on());
 
         assertEquals("minesweeper", comments.get(1).getGame());
         assertEquals("Peto", comments.get(1).getUserName());
-        assertEquals(140, comments.get(1).getComment());
+        assertEquals("bla", comments.get(1).getComment());
         assertEquals(date, comments.get(1).getCommented_on());
 
         assertEquals("minesweeper", comments.get(2).getGame());
         assertEquals("Jergus", comments.get(2).getUserName());
-        assertEquals(100, comments.get(2).getComment());
+        assertEquals("bla", comments.get(2).getComment());
         assertEquals(date, comments.get(2).getCommented_on());
     }
 }
