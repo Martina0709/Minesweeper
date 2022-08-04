@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 
 public class CommentServiceFile implements CommentService {
 
-    private static final String FILE = "score.bin";
+    private static final String FILE = "comment.bin";
     private List<Comment> comments = new ArrayList<>();
 
     @Override
     public void addComment(Comment comment) {
         comments = load();
         comments.add(comment);
-        save(comments);
+        save();
 
     }
 
@@ -34,7 +34,7 @@ public class CommentServiceFile implements CommentService {
     @Override
     public void reset() {
         comments = new ArrayList<>();
-        save(comments);
+        save();
 
     }
 
@@ -42,11 +42,12 @@ public class CommentServiceFile implements CommentService {
         try (var is = new ObjectInputStream(new FileInputStream(FILE))) {
             return (List<Comment>) is.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new GameStudioException(e);
+            save();
         }
+        return new ArrayList<>();
     }
 
-    private void save(List<Comment> scores2save) {
+    private void save() {
         try (var os = new ObjectOutputStream(new FileOutputStream(FILE))) {
             os.writeObject(comments);
         } catch (IOException e) {

@@ -5,10 +5,7 @@ import minesweeper.consoleui.SwingUI;
 import minesweeper.consoleui.UserInterface;
 import minesweeper.core.BestTimes;
 import minesweeper.core.Field;
-import service.CommentService;
-import service.CommentServiceJDBC;
-import service.ScoreService;
-import service.ScoreServiceJDBC;
+import service.*;
 
 /**
  * Main application class.
@@ -57,7 +54,7 @@ public class Minesweeper {
         );
 
         scoreService = new ScoreServiceJDBC();
-        commentService = new CommentServiceJDBC();
+        commentService = new CommentServiceFile();
 
         userInterface = new ConsoleUI();
         userInterface.newGameStarted(field);

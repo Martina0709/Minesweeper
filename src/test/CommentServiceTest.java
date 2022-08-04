@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class CommentServiceTest {
     //    private ScoreService scoreService = new ScoreServiceJDBC();
-    private CommentService commentService = new CommentServiceFile();
+    private CommentService commentService = new CommentServiceJDBC();
 
     @Test
     public void testReset() {
@@ -39,29 +39,37 @@ public class CommentServiceTest {
     @Test
     public void testGetComments() {
         commentService.reset();
-        var date = new Date();
-        commentService.addComment(new Comment("minesweeper", "Peto", "bla", date));
-        commentService.addComment(new Comment("minesweeper", "Katka", "bla", date));
-        commentService.addComment(new Comment("tiles", "Zuzka", "bla", date));
-        commentService.addComment(new Comment("minesweeper", "Jergus", "bla", date));
+        var date1 = new Date();
+        var date2 = new Date( System.currentTimeMillis() + 5000L);
+        var date3 = new Date( System.currentTimeMillis() + 10000L);
+        var date4 = new Date( System.currentTimeMillis() + 20000L);
+        commentService.addComment(new Comment("minesweeper", "Peto", "bla", date1));
+        commentService.addComment(new Comment("minesweeper", "Katka", "bla", date2));
+        commentService.addComment(new Comment("minesweeper", "Zuzka", "bla", date3));
+        commentService.addComment(new Comment("minesweeper", "Jergus", "bla", date4));
 
         var comments = commentService.getComments("minesweeper");
 
-        assertEquals(3, comments.size());
+        assertEquals(4, comments.size());
 
         assertEquals("minesweeper", comments.get(0).getGame());
-        assertEquals("Katka", comments.get(0).getUserName());
+        assertEquals("Jergus", comments.get(0).getUserName());
         assertEquals("bla", comments.get(0).getComment());
-        assertEquals(date, comments.get(0).getCommented_on());
+        assertEquals(date4, comments.get(0).getCommented_on());
 
         assertEquals("minesweeper", comments.get(1).getGame());
-        assertEquals("Peto", comments.get(1).getUserName());
+        assertEquals("Zuzka", comments.get(1).getUserName());
         assertEquals("bla", comments.get(1).getComment());
-        assertEquals(date, comments.get(1).getCommented_on());
+        assertEquals(date3, comments.get(1).getCommented_on());
 
         assertEquals("minesweeper", comments.get(2).getGame());
-        assertEquals("Jergus", comments.get(2).getUserName());
+        assertEquals("Katka", comments.get(2).getUserName());
         assertEquals("bla", comments.get(2).getComment());
-        assertEquals(date, comments.get(2).getCommented_on());
+        assertEquals(date2, comments.get(2).getCommented_on());
+
+        assertEquals("minesweeper", comments.get(3).getGame());
+        assertEquals("Peto", comments.get(3).getUserName());
+        assertEquals("bla", comments.get(3).getComment());
+        assertEquals(date1, comments.get(3).getCommented_on());
     }
 }
