@@ -36,11 +36,6 @@ public class ScoreServiceFile implements ScoreService {
         save(scores);
     }
 
-    @Override
-    public void addComment(Comment comment) {
-
-    }
-
     private List<Score> load() {
         try (var is = new ObjectInputStream(new FileInputStream(FILE))) {
             return (List<Score>) is.readObject();

@@ -7,6 +7,7 @@ import java.sql.SQLOutput;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,6 +95,8 @@ public class ConsoleUI implements UserInterface {
                 System.out.println(userName + ", odkryl si minu. Prehral si. Tvoje skore je " + gameScore + ".");
                 addNewScore("minesweeper", userName, gameScore);
                 printTop5Scores();
+                addNewComment("minesweeper", userName);
+                printComments();
                 break;
             }
             if (fieldState == GameState.SOLVED) {
@@ -101,6 +104,8 @@ public class ConsoleUI implements UserInterface {
                 System.out.println(userName + ", vyhral si. Tvoje skore je " + gameScore + ".");
                 addNewScore("minesweeper", userName, gameScore);
                 printTop5Scores();
+                addNewComment("minesweeper", userName);
+                printComments();
                 break;
             }
         } while (true);
@@ -109,11 +114,11 @@ public class ConsoleUI implements UserInterface {
     }
 
     private void addNewScore(String game, String userName, int score) {
-        Minesweeper.getInstance().getService().addScore(new Score(game, userName, score, new Date()));
+        Minesweeper.getInstance().getScoreService().addScore(new Score(game, userName, score, new Date()));
     }
 
     private void printTop5Scores() {
-        List<Score> scores = Minesweeper.getInstance().getService().getBestScores("minesweeper");
+        List<Score> scores = Minesweeper.getInstance().getScoreService().getBestScores("minesweeper");
         for (int i = 0; i < scores.size(); i++) {
             if (i == 5) {
                 break;
@@ -122,16 +127,19 @@ public class ConsoleUI implements UserInterface {
         }
     }
 
-    private void addNewComment(String game, String userName, String comment) {
-        Minesweeper.getInstance().getService().addComment(new Comment(game, userName, comment, new Date()));
+    private void addNewComment(String game, String userName) {
+        System.out.println("Napiste komentar:");
+        Scanner scanner = new Scanner(System.in);
+        String comment = scanner.next();
+        Minesweeper.getInstance().getCommentService().addComment(new Comment(game, userName, comment, new Date()));
     }
 
-//    private void printComments() {
-//        List<Comment> comments = Minesweeper.getInstance().getService().getBestScores("minesweeper");
-//        for (int i = 0; i < comments.size(); i++) {
-//            System.out.printf("Meno: %s, Body: %d%n", comments.get(i).getUserName(), comments.get(i).getCommented_on());
-//        }
-//    }
+    private void printComments() {
+        List<Comment> comments = Minesweeper.getInstance().getCommentService().getComments("minesweeper");
+        for (Comment comment : comments) {
+            System.out.printf("Meno: %s, komentar: %s%n", comment.getUserName(), comment.getComment());
+        }
+    }
 
     /**
      * Updates user interface - prints the field.

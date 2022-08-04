@@ -5,6 +5,8 @@ import minesweeper.consoleui.SwingUI;
 import minesweeper.consoleui.UserInterface;
 import minesweeper.core.BestTimes;
 import minesweeper.core.Field;
+import service.CommentService;
+import service.CommentServiceJDBC;
 import service.ScoreService;
 import service.ScoreServiceJDBC;
 
@@ -19,7 +21,8 @@ public class Minesweeper {
 
     private BestTimes bestTimes = new BestTimes();
 
-    private ScoreService service;
+    private ScoreService scoreService;
+    private CommentService commentService;
 
 
     private static Minesweeper instance;
@@ -53,7 +56,8 @@ public class Minesweeper {
                 setting.getMineCount()
         );
 
-        service = new ScoreServiceJDBC();
+        scoreService = new ScoreServiceJDBC();
+        commentService = new CommentServiceJDBC();
 
         userInterface = new ConsoleUI();
         userInterface.newGameStarted(field);
@@ -82,7 +86,11 @@ public class Minesweeper {
         return this.setting;
     }
 
-    public ScoreService getService() {
-        return service;
+    public ScoreService getScoreService() {
+        return scoreService;
+    }
+
+    public CommentService getCommentService() {
+        return commentService;
     }
 }

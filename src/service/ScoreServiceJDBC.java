@@ -68,9 +68,4 @@ public class ScoreServiceJDBC implements ScoreService {
             throw new GameStudioException(e);
         }
     }
-
-    @Override
-    public void addComment(Comment comment) {
-
-    }
 }

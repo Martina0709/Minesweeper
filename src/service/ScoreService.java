@@ -13,5 +13,4 @@ public interface ScoreService {
 
     void reset();
 
-    void addComment(Comment comment);
 }

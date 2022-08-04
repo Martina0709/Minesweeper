@@ -15,8 +15,8 @@ public class CommentServiceJDBC implements CommentService {
     private static final String JDBC_USER = "postgres";
     private static final String JDBC_PASSWORD = "postgres";
 
-    private static final String STATEMENT_ADD_SCORE = "INSERT INTO score VALUES (?, ?, ?, ?)";
-    private static final String STATEMENT_BEST_SCORES = "SELECT game, username, points, played_on FROM score WHERE game= ? ORDER BY points DESC LIMIT 5";
+    private static final String STATEMENT_ADD_SCORE = "INSERT INTO comment VALUES (?, ?, ?, ?)";
+    private static final String STATEMENT_BEST_SCORES = "SELECT game, username, comment, commented_on FROM comment WHERE game= ? ORDER BY commented_on DESC";
     private static final String STATEMENT_RESET = "DELETE FROM score";
 
     @Override
