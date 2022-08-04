@@ -1,7 +1,7 @@
 package service;
 
 import entity.Comment;
-import entity.Score;
+
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreServiceJDBC implements ScoreService {
+public class CommentServiceJDBC implements CommentService {
 
     private static final String JDBC_URL = "jdbc:postgresql://localhost/gamestudio";
     private static final String JDBC_USER = "postgres";
@@ -20,14 +20,14 @@ public class ScoreServiceJDBC implements ScoreService {
     private static final String STATEMENT_RESET = "DELETE FROM score";
 
     @Override
-    public void addScore(Score score) {
+    public void addComment(Comment comment) {
         try (var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              var statement = connection.prepareStatement(STATEMENT_ADD_SCORE)
         ) {
-            statement.setString(1, score.getGame());
-            statement.setString(2, score.getUsername());
-            statement.setInt(3, score.getPoints());
-            statement.setTimestamp(4, new Timestamp(score.getPlayedOn().getTime()));
+            statement.setString(1, comment.getGame());
+            statement.setString(2, comment.getUserName());
+            statement.setString(3, comment.getComment());
+            statement.setTimestamp(4, new Timestamp(comment.getCommented_on().getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new GameStudioException(e);
@@ -36,24 +36,22 @@ public class ScoreServiceJDBC implements ScoreService {
     }
 
     @Override
-    public List<Score> getBestScores(String game) {
+    public List<Comment> getComments(String game) {
 
         try (var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              var statement = connection.prepareStatement(STATEMENT_BEST_SCORES)
         ) {
             statement.setString(1, game);
             try (var rs = statement.executeQuery()) {
-                var scores = new ArrayList<Score>();
+                var comments = new ArrayList<Comment>();
                 while (rs.next()) {
-                    scores.add(new Score(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getTimestamp(4)));
+                    comments.add(new Comment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4)));
                 }
-                return scores;
+                return comments;
             }
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }
-
-
     }
 
     @Override
@@ -67,10 +65,6 @@ public class ScoreServiceJDBC implements ScoreService {
         } catch (SQLException e) {
             throw new GameStudioException(e);
         }
-    }
-
-    @Override
-    public void addComment(Comment comment) {
 
     }
 }

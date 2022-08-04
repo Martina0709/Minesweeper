@@ -81,8 +81,8 @@ public class Settings implements Serializable {
 
     public static Settings load() {
         //try with resources - netreba robit close()
-        try(ObjectInputStream ois = new ObjectInputStream(
-                    new FileInputStream(SETTING_FILE))) {
+        try (ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream(SETTING_FILE))) {
             return (Settings) ois.readObject();
         } catch (IOException e) {
             System.out.println("Info: nepodarilo sa otvorit settings subor, pouzivam default BEGINNER");

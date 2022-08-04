@@ -11,17 +11,15 @@ import java.util.Date;
 
 
 public class TestJDBC {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         ScoreService service = new ScoreServiceJDBC();
 
         //service.reset();
 
-        service.addScore(new Score("minesweeper","David",456,new Date()));
+        service.addScore(new Score("minesweeper", "David", 456, new Date()));
 
         var scores = service.getBestScores("minesweeper");
         System.out.println(scores);
-
-
 
 
     }
@@ -50,7 +48,6 @@ public class TestJDBC {
 //}
 
 
-
 //    public static void main(String[] args) throws Exception{
 //
 //        try( var connection=DriverManager.getConnection("jdbc:postgresql://localhost/gamestudio","postgres","postgres");
@@ -60,7 +57,6 @@ public class TestJDBC {
 //                    "INSERT INTO score VALUES ('minesweeper', 'July', 663, '2022-07-30 12:45')");
 //        }
 //    }
-
 
 
 //    public static void main(String[] args) throws Exception{

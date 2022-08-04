@@ -12,7 +12,9 @@ import service.ScoreServiceJDBC;
  * Main application class.
  */
 public class Minesweeper {
-    /** User interface. */
+    /**
+     * User interface.
+     */
     private UserInterface userInterface;
 
     private BestTimes bestTimes = new BestTimes();
@@ -26,12 +28,12 @@ public class Minesweeper {
 
     //vracia prave jednu instanciu singletona
     public static Minesweeper getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             new Minesweeper();
         }
         return instance;
     }
- 
+
     /**
      * Constructor.
      */
@@ -59,6 +61,7 @@ public class Minesweeper {
 
     /**
      * Main method.
+     *
      * @param args arguments
      */
     public static void main(String[] args) {
@@ -68,7 +71,6 @@ public class Minesweeper {
     public BestTimes getBestTimes() {
         return bestTimes;
     }
-
 
 
     public void setSetting(Settings setting) {

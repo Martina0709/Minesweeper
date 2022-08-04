@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import entity.Comment;
 import entity.Score;
 import minesweeper.Minesweeper;
 import minesweeper.Settings;
@@ -120,6 +121,17 @@ public class ConsoleUI implements UserInterface {
             System.out.printf("Meno: %s, Body: %d%n", scores.get(i).getUsername(), scores.get(i).getPoints());
         }
     }
+
+    private void addNewComment(String game, String userName, String comment) {
+        Minesweeper.getInstance().getService().addComment(new Comment(game, userName, comment, new Date()));
+    }
+
+//    private void printComments() {
+//        List<Comment> comments = Minesweeper.getInstance().getService().getBestScores("minesweeper");
+//        for (int i = 0; i < comments.size(); i++) {
+//            System.out.printf("Meno: %s, Body: %d%n", comments.get(i).getUserName(), comments.get(i).getCommented_on());
+//        }
+//    }
 
     /**
      * Updates user interface - prints the field.

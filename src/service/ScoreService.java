@@ -1,5 +1,6 @@
 package service;
 
+import entity.Comment;
 import entity.Score;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface ScoreService {
     List<Score> getBestScores(String game);
 
     void reset();
+
+    void addComment(Comment comment);
 }
