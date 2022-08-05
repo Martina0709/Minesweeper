@@ -54,7 +54,7 @@ public class Minesweeper {
         );
 
         scoreService = new ScoreServiceJDBC();
-        commentService = new CommentServiceFile();
+        commentService = new CommentServiceJDBC();
 
         userInterface = new ConsoleUI();
         userInterface.newGameStarted(field);
