@@ -20,6 +20,7 @@ public class Minesweeper {
 
     private ScoreService scoreService;
     private CommentService commentService;
+    private RatingService ratingService;
 
 
     private static Minesweeper instance;
@@ -55,6 +56,7 @@ public class Minesweeper {
 
         scoreService = new ScoreServiceJDBC();
         commentService = new CommentServiceJDBC();
+        ratingService = new RatingServiceJDBC();
 
         userInterface = new ConsoleUI();
         userInterface.newGameStarted(field);
@@ -89,5 +91,9 @@ public class Minesweeper {
 
     public CommentService getCommentService() {
         return commentService;
+    }
+
+    public RatingService getRatingService() {
+        return ratingService;
     }
 }

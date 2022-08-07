@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import entity.Comment;
+import entity.Rating;
 import entity.Score;
 import minesweeper.Minesweeper;
 import minesweeper.Settings;
@@ -64,8 +65,12 @@ public class ConsoleUI implements UserInterface {
         int gameScore = 0;
 
         this.field = field;
-        System.out.println("Zadaj svoje meno:");
-        userName = readLine();
+
+        while(userName.length() < 1 || userName.length() > 64){
+            System.out.println("Zadaj svoje meno:");
+            userName = readLine();
+        }
+
         System.out.println("Vyber obtiaznost:");
         System.out.println("(1) BEGINNER, (2) INTERMEDIATE, (3) EXPERT, (ENTER) NECHAT DEFAULT");
         String level = readLine();
@@ -97,6 +102,8 @@ public class ConsoleUI implements UserInterface {
                 printTop5Scores();
                 addNewComment("minesweeper", userName);
                 printComments();
+                setNewRating("minesweeper", userName);
+                getAverageRating("minesweeper");
                 break;
             }
             if (fieldState == GameState.SOLVED) {
@@ -106,6 +113,8 @@ public class ConsoleUI implements UserInterface {
                 printTop5Scores();
                 addNewComment("minesweeper", userName);
                 printComments();
+                setNewRating("minesweeper", userName);
+                getAverageRating("minesweeper");
                 break;
             }
         } while (true);
@@ -128,9 +137,12 @@ public class ConsoleUI implements UserInterface {
     }
 
     private void addNewComment(String game, String userName) {
-        System.out.println("Napiste komentar:");
         Scanner scanner = new Scanner(System.in);
-        String comment = scanner.next();
+        String comment = "";
+        while(comment.length() < 1 || comment.length() > 100){
+            System.out.println("Napiste komentar:");
+            comment = scanner.next();
+        }
         Minesweeper.getInstance().getCommentService().addComment(new Comment(game, userName, comment, new Date()));
     }
 
@@ -139,6 +151,28 @@ public class ConsoleUI implements UserInterface {
         for (Comment comment : comments) {
             System.out.printf("Meno: %s, komentar: %s%n", comment.getUserName(), comment.getComment());
         }
+    }
+
+    private void setNewRating(String game, String userName) {
+        Scanner scanner = new Scanner(System.in);
+
+        int rating = 0;
+        while (rating <= 0 || rating > 5){
+            System.out.println("Napiste hodnotenie (1-5):");
+            try {
+                rating = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Nespravny vstup!");
+            }
+        }
+
+
+        Minesweeper.getInstance().getRatingService().setRating(new Rating(game, userName, rating, new Date()));
+    }
+
+    private void getAverageRating(String game) {
+        int averageRating = Minesweeper.getInstance().getRatingService().getAverageRating(game);
+        System.out.printf("Priemerne hodnotenie hry je %d%n", averageRating);
     }
 
     /**
