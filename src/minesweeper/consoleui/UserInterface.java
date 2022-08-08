@@ -6,4 +6,5 @@ public interface UserInterface {
     void newGameStarted(Field field);
 
     void update();
+    void play();
 }

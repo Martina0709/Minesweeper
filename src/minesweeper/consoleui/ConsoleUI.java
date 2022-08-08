@@ -3,8 +3,6 @@ package minesweeper.consoleui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.SQLOutput;
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -15,11 +13,12 @@ import entity.Comment;
 import entity.Rating;
 import entity.Score;
 import minesweeper.Minesweeper;
-import minesweeper.Settings;
 import minesweeper.core.Field;
 import minesweeper.core.GameState;
-import minesweeper.core.Mine;
 import minesweeper.core.Tile;
+import service.CommentServiceJDBC;
+import service.RatingServiceJDBC;
+import service.ScoreServiceJDBC;
 
 /**
  * Console user interface.
@@ -40,6 +39,8 @@ public class ConsoleUI implements UserInterface {
      * name of the player
      */
     private String userName = "";
+
+    private Settings setting;
 
     /**
      * Reads line of text from the reader.
@@ -66,8 +67,8 @@ public class ConsoleUI implements UserInterface {
 
         this.field = field;
 
-        while(userName.length() < 1 || userName.length() > 64){
-            System.out.println("Zadaj svoje meno:");
+        while (userName.length() < 1 || userName.length() > 64) {
+            System.out.println("Zadaj svoje meno(1-64 znakov):");
             userName = readLine();
         }
 
@@ -82,7 +83,8 @@ public class ConsoleUI implements UserInterface {
                     case 3 -> Settings.EXPERT;
                     default -> Settings.BEGINNER;
                 };
-                Minesweeper.getInstance().setSetting(s);
+                this.setting = s;
+                this.setting.save();
                 this.field = new Field(s.getRowCount(), s.getColumnCount(), s.getMineCount());
             } catch (NumberFormatException e) {
                 //empty naschval
@@ -98,26 +100,22 @@ public class ConsoleUI implements UserInterface {
             if (fieldState == GameState.FAILED) {
                 gameScore = this.field.getScore();
                 System.out.println(userName + ", odkryl si minu. Prehral si. Tvoje skore je " + gameScore + ".");
-                addNewScore("minesweeper", userName, gameScore);
-                printTop5Scores();
-                addNewComment("minesweeper", userName);
-                printComments();
-                setNewRating("minesweeper", userName);
-                getAverageRating("minesweeper");
+
                 break;
             }
             if (fieldState == GameState.SOLVED) {
                 gameScore = this.field.getScore();
                 System.out.println(userName + ", vyhral si. Tvoje skore je " + gameScore + ".");
-                addNewScore("minesweeper", userName, gameScore);
-                printTop5Scores();
-                addNewComment("minesweeper", userName);
-                printComments();
-                setNewRating("minesweeper", userName);
-                getAverageRating("minesweeper");
+
                 break;
             }
         } while (true);
+        addNewScore("minesweeper", userName, gameScore);
+        printTop5Scores();
+        addNewComment("minesweeper", userName);
+        printComments();
+        setNewRating("minesweeper", userName);
+        getAverageRating("minesweeper");
         System.exit(0);
 
     }
@@ -139,8 +137,8 @@ public class ConsoleUI implements UserInterface {
     private void addNewComment(String game, String userName) {
         Scanner scanner = new Scanner(System.in);
         String comment = "";
-        while(comment.length() < 1 || comment.length() > 100){
-            System.out.println("Napiste komentar:");
+        while (comment.length() < 1 || comment.length() > 100) {
+            System.out.println("Napiste komentar(1-100 znakov):");
             comment = scanner.next();
         }
         Minesweeper.getInstance().getCommentService().addComment(new Comment(game, userName, comment, new Date()));
@@ -157,12 +155,13 @@ public class ConsoleUI implements UserInterface {
         Scanner scanner = new Scanner(System.in);
 
         int rating = 0;
-        while (rating <= 0 || rating > 5){
+        while (rating <= 0 || rating > 5) {
             System.out.println("Napiste hodnotenie (1-5):");
             try {
                 rating = Integer.parseInt(scanner.nextLine());
             } catch (Exception e) {
                 System.out.println("Nespravny vstup!");
+
             }
         }
 
@@ -202,6 +201,20 @@ public class ConsoleUI implements UserInterface {
             System.out.println();
         }
 
+
+    }
+
+    @Override
+    public void play() {
+        setting = Settings.load();
+
+        Field field = new Field(
+                setting.getRowCount(),
+                setting.getColumnCount(),
+                setting.getMineCount()
+        );
+
+        newGameStarted(field);
 
     }
 
